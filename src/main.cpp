@@ -68,7 +68,6 @@ void renderTexture(SDL_Texture* texture , SDL_Renderer* renderer , int x , int y
     dest.y = y;
     dest.w = static_cast<int>(BALL_WIDTH * scale);
     dest.h = static_cast<int>(BALL_HEIGHT * scale);
-    //SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
     SDL_RenderCopy(renderer, texture, NULL, &dest);
 }
 
