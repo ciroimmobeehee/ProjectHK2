@@ -1,29 +1,42 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-      {
-        "label": "build SDL2 App",
-        "type": "shell",
-        "command": "g++",
-        "args": [
-          "-IC:/Users/Admin/Desktop/SpongeBob/include/SDL2", 
-          "-IC:/Users/Admin/Desktop/SpongeBob/include",     
-          "-LC:/Users/Admin/Desktop/SpongeBob/lib",
-          "-LC:/Users/Admin/Desktop/SpongeBob/lib",       
-          "src/main.cpp",
-          "-lmingw32",
-          "-lSDL2_image",
-          "-lSDL2main",
-          "-lSDL2",
-          "-o",
-          "SDL2App.exe"
-        ],
-        "group": {
-          "kind": "build",
-          "isDefault": true
-        },
-        "problemMatcher": ["$gcc"]
-      }
-    ]
-  }
-  
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build MiniGolf",
+      "type": "shell",
+      "command": "make",
+      "args": [],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+    {
+      "label": "Clean MiniGolf",
+      "type": "shell",
+      "command": "make",
+      "args": [
+        "clean"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run MiniGolf",
+      "type": "shell",
+      "command": "${workspaceFolder}\\bin\\MiniGolf.exe",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

@@ -23,6 +23,10 @@ bool Game::init() {
     if(!Renderer::init(window, renderer, "MiniGolf", SCREEN_WIDTH, SCREEN_HEIGHT)) {
         return false;
     }
+    ballTexture = TextureManager::loadTexture("assets/ball.png", renderer);
+    backgroundTexture = TextureManager::loadTexture("assets/background.jpg", renderer);
+    holeTexture = TextureManager::loadTexture("assets/hole.png", renderer);
+    return true;
 }
 
 void Game::run() {
