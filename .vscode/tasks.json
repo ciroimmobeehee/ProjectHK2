@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build SDL2 App",
+        "type": "shell",
+        "command": "g++",
+        "args": [
+          "-IC:/Users/Admin/Desktop/SpongeBob/include/SDL2", 
+          "-IC:/Users/Admin/Desktop/SpongeBob/include",     
+          "-LC:/Users/Admin/Desktop/SpongeBob/lib",
+          "-LC:/Users/Admin/Desktop/SpongeBob/lib",       
+          "src/main.cpp",
+          "-lmingw32",
+          "-lSDL2_image",
+          "-lSDL2main",
+          "-lSDL2",
+          "-o",
+          "SDL2App.exe"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": ["$gcc"]
+      }
+    ]
+  }
+  
