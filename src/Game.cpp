@@ -27,7 +27,9 @@ bool Game::init() {
     ballTexture = TextureManager::loadTexture("assets/ball.png", renderer);
     backgroundTexture = TextureManager::loadTexture("assets/background.jpg", renderer);
     holeTexture = TextureManager::loadTexture("assets/hole.png", renderer);
-    obstacleTexture = TextureManager::loadTexture("assets/tile64_dark.png", renderer);
+    obstacleTexture1 = TextureManager::loadTexture("assets/tile64_dark.png", renderer);
+    obstacleTexture2 = TextureManager::loadTexture("assets/tile32_dark.png", renderer);
+    obstacleTexture3 = TextureManager::loadTexture("assets/tile32_light.png", renderer);
     return true;
 }
 
@@ -45,7 +47,9 @@ void Game::cleanup() {
     SDL_DestroyTexture(ballTexture);
     SDL_DestroyTexture(backgroundTexture);
     SDL_DestroyTexture(holeTexture);
-    SDL_DestroyTexture(obstacleTexture);
+    SDL_DestroyTexture(obstacleTexture1);
+    SDL_DestroyTexture(obstacleTexture2);
+    SDL_DestroyTexture(obstacleTexture3);
     Renderer::cleanup(window, renderer);
 }
 
@@ -98,6 +102,14 @@ void Game::render() {
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
     for(int i = 0 ; i < numObstacles ; i++) {
+        SDL_Texture* obstacleTexture = nullptr;
+        if( i == 0 ){
+            obstacleTexture = obstacleTexture1;
+        }else if( i == 1 ){
+            obstacleTexture = obstacleTexture2;
+        }else if( i == 2 ){
+            obstacleTexture = obstacleTexture3;
+        }
         SDL_Rect dest = {obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height};
         SDL_RenderCopy(renderer, obstacleTexture, NULL, &dest);
     }

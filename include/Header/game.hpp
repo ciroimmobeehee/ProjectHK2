@@ -24,7 +24,10 @@ class Game{
         SDL_Texture* ballTexture = nullptr;
         SDL_Texture* backgroundTexture = nullptr;
         SDL_Texture* holeTexture = nullptr;
-        SDL_Texture* obstacleTexture = nullptr;
+        SDL_Texture* obstacleTexture1 = nullptr;
+        SDL_Texture* obstacleTexture2 = nullptr;
+        SDL_Texture* obstacleTexture3 = nullptr;
+
 
         float ballX, ballY, velocityX, velocityY, ballScale;
         float holeX, holeY;
@@ -34,5 +37,6 @@ class Game{
         void wallCollision();
         void holeCollision();
         void obstacleCollision();
+
 };
 #endif
