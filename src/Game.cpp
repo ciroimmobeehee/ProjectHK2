@@ -1,6 +1,7 @@
 #include "Header\game.hpp"
 #include "Header\renderer.hpp"
 #include "Header\texturemanager.hpp"
+#include "Header\obstacle.hpp"
 #include <iostream>
 #include <cmath>
 #include <SDL.h>
@@ -26,6 +27,7 @@ bool Game::init() {
     ballTexture = TextureManager::loadTexture("assets/ball.png", renderer);
     backgroundTexture = TextureManager::loadTexture("assets/background.jpg", renderer);
     holeTexture = TextureManager::loadTexture("assets/hole.png", renderer);
+    obstacleTexture = TextureManager::loadTexture("assets/tile64_dark.png", renderer);
     return true;
 }
 
@@ -43,6 +45,7 @@ void Game::cleanup() {
     SDL_DestroyTexture(ballTexture);
     SDL_DestroyTexture(backgroundTexture);
     SDL_DestroyTexture(holeTexture);
+    SDL_DestroyTexture(obstacleTexture);
     Renderer::cleanup(window, renderer);
 }
 
@@ -72,6 +75,7 @@ void Game::update() {
     ballY = ballY + velocityY;
 
     wallCollision();
+    obstacleCollision();
 
     velocityX = velocityX * FRICTION;
     velocityY = velocityY * FRICTION;
@@ -93,16 +97,34 @@ void Game::update() {
 void Game::render() {
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
+    for(int i = 0 ; i < numObstacles ; i++) {
+        SDL_Rect dest = {obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height};
+        SDL_RenderCopy(renderer, obstacleTexture, NULL, &dest);
+    }
     TextureManager::renderTexture(holeTexture, renderer, static_cast<int>(holeX), static_cast<int>(holeY), 1.0f);
     TextureManager::renderTexture(ballTexture, renderer, static_cast<int>(ballX), static_cast<int>(ballY), ballScale);
     SDL_RenderPresent(renderer);
 }
 
 void Game::wallCollision() {
-    if (ballX < 0 || ballX + BALL_WIDTH > SCREEN_WIDTH) {
+    
+    if (ballX < 0) {
+        ballX = 0;
         velocityX = -velocityX * BOUNCE;
     }
-    if (ballY < 0 || ballY + BALL_HEIGHT > SCREEN_HEIGHT) {
+
+    if (ballX + BALL_WIDTH > SCREEN_WIDTH) {
+        ballX = SCREEN_WIDTH - BALL_WIDTH;
+        velocityX = -velocityX * BOUNCE;
+    }
+    
+    if (ballY < 0) {
+        ballY = 0;
+        velocityY = -velocityY * BOUNCE;
+    }
+    
+    if (ballY + BALL_HEIGHT > SCREEN_HEIGHT) {
+        ballY = SCREEN_HEIGHT - BALL_HEIGHT;
         velocityY = -velocityY * BOUNCE;
     }
 }
@@ -126,6 +148,33 @@ void Game::holeCollision() {
             velocityX = 0;
             velocityY = 0;
             ballScale = 1.0f;
+        }
+    }
+}
+
+void Game::obstacleCollision(){
+    for(int i = 0; i < numObstacles; i++) {
+        if(ballX + BALL_WIDTH > obstacles[i].x && ballX < obstacles[i].x + obstacles[i].width &&
+           ballY + BALL_HEIGHT > obstacles[i].y && ballY < obstacles[i].y + obstacles[i].height) {
+            float overlapX =  (velocityX > 0) ? (ballX + BALL_WIDTH - obstacles[i].x)
+                                                :(obstacles[i].x + obstacles[i].width - ballX);
+            float overlapY = (velocityY > 0) ? (ballY + BALL_HEIGHT - obstacles[i].y)
+                                                :(obstacles[i].y + obstacles[i].height - ballY);
+            if(overlapX < overlapY){
+                if(velocityX > 0){
+                    ballX = ballX - overlapX;
+                }else{
+                    ballX = ballX + overlapX;
+                }
+                velocityX = -velocityX * BOUNCE;
+            }else{
+                if(velocityY > 0){
+                    ballY = ballY - overlapY;
+                }else{
+                    ballY = ballY + overlapY;
+                }
+                velocityY = -velocityY * BOUNCE;
+            }
         }
     }
 }
