@@ -1,5 +1,6 @@
 #ifndef GAME_HPP
 #define GAME_HPP
+#include "Header/level.hpp"
 #include <SDL.h>
 #include <SDL_image.h>
 class Game{
@@ -27,16 +28,25 @@ class Game{
         SDL_Texture* obstacleTexture1 = nullptr;
         SDL_Texture* obstacleTexture2 = nullptr;
         SDL_Texture* obstacleTexture3 = nullptr;
+        SDL_Texture* arrowTexture = nullptr;
 
 
         float ballX, ballY, velocityX, velocityY, ballScale;
         float holeX, holeY;
         bool dragging;
         int startX, startY;
+        float arrowX, arrowY, arrowAngle;
+        vector<Level> levels;
+        int currentLevel;
+        vector<Obstacle> obstacles;
+        int numObstacles;
 
         void wallCollision();
         void holeCollision();
         void obstacleCollision();
+
+        void loadLevels();
+        void initLevel();
 
 };
 #endif
